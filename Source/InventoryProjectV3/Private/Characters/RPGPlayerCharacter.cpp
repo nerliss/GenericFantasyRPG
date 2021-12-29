@@ -8,6 +8,8 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
+#include "DrawDebugHelpers.h"
 
 // Print string on screen macro
 #define DEBUGMESSAGE(x, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT(x), __VA_ARGS__));}
@@ -30,8 +32,9 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 	// SpringArm (Camera boom) component configuration
 	SpringArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	SpringArmComp->SetupAttachment(GetCapsuleComponent(), "head");
-	SpringArmComp->TargetArmLength = 600.f;
+	SpringArmComp->TargetArmLength = 500.f;
 	SpringArmComp->bUsePawnControlRotation = true;
+	SpringArmComp->SocketOffset = FVector(0.f, 80.f, 0.f); // Give camera more Skyrim-like style
 
 	// Camera component configuration
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
@@ -54,6 +57,9 @@ void ARPGPlayerCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	// SpringArm offset 
+	SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 65.f));
+
 }
 
 // Called every frame
@@ -122,5 +128,44 @@ void ARPGPlayerCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+AActor* ARPGPlayerCharacter::Linetrace_Camera(float TraceLength, bool bDrawDebugLine)
+{
+	FVector StartLoc = CameraComp->GetComponentLocation();
+	FVector EndLoc = (StartLoc + (CameraComp->GetForwardVector() * TraceLength)); // Start location of linetrace is added to camera's forward vector which is multiplied by Trace length
+
+	FHitResult HitResult;
+
+	FCollisionQueryParams CQP;
+	CQP.AddIgnoredActor(this);
+
+	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, StartLoc, EndLoc, ECC_WorldDynamic, CQP);
+
+	
+
+	if (bHitResult)
+	{
+		// Draw debug line if set to
+		if (bDrawDebugLine)
+		{
+			DrawDebugLine(GetWorld(), StartLoc, EndLoc, FColor::Red, false, 4.f, 0, 2.f);
+		}
+
+		AActor* HitActor = HitResult.GetActor();
+
+// 		if (HitActor->GetClass()->ImplementsInterface(BPI_Interact::StaticClass()))
+// 		{
+// 			return;
+// 		}
+
+		// TODO: DoesInplementInterface() using C++ means create the Interface in C++
+		InteractActor = HitActor;
+
+		return InteractActor;
+	}
+
+
+	return InteractActor = NULL;
 }
 

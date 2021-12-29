@@ -8,6 +8,7 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class AActor;
 
 UCLASS()
 class INVENTORYPROJECTV3_API ARPGPlayerCharacter : public ACharacter
@@ -51,6 +52,12 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Linetrace|Camera|Actor")
+	AActor* InteractActor;
+
+	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
+	AActor* Linetrace_Camera(float TraceLength, bool bDrawDebugLine);
 
 public:	
 	// Called every frame
