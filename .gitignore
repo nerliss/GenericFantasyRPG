@@ -75,3 +75,8 @@ DerivedDataCache/*
 
 # Third-party content
 Content/StarterContent/*
+Content/AutoLandscape/*
+Content/MSPresets/*
+Content/Test/*
+Content/Megascans/*
+Content/CartoonWaterShader/*
