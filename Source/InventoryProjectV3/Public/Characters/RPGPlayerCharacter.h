@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "RPGPlayerCharacter.generated.h"
 
+class URPGXP_Component;
 class UCameraComponent;
 class USpringArmComponent;
 class AActor;
@@ -52,6 +53,9 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	URPGXP_Component* XPComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Linetrace|Camera|Actor")
 	AActor* InteractActor;
