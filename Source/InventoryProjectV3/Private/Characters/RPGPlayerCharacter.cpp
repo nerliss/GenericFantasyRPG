@@ -54,6 +54,16 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 	BaseTurnRate = 45.f;
 	BaseLookUpRate = 45.f;
 
+	// Camera
+	MaxTargetBoomLength = SpringArmComp->TargetArmLength;
+	MinTargetBoomLength = 0.f;
+
+	// POV
+	bIsTP = true;
+	bIsFP = false;
+
+	// Dialog
+	bInDialog = false;
 }
 
 // Called when the game starts or when spawned
@@ -81,7 +91,7 @@ void ARPGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	// Setup action bindings
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-
+	PlayerInputComponent->BindAction("SwitchPOV", IE_Pressed, this, &ARPGPlayerCharacter::SwitchPOV);
 
 	// Setup axis bindings
 	PlayerInputComponent->BindAxis("MoveForward", this, &ARPGPlayerCharacter::MoveForward);
@@ -134,10 +144,38 @@ void ARPGPlayerCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
-AActor* ARPGPlayerCharacter::Linetrace_Camera(float TraceLength, bool bDrawDebugLine)
+void ARPGPlayerCharacter::SwitchPOV()
+{
+	if (bIsTP) // to FirstPerson
+	{
+		SpringArmComp->TargetArmLength = MinTargetBoomLength;
+		SpringArmComp->SocketOffset = FVector(0.f, 0.f, 0.f);
+
+		GetMesh()->SetVisibility(false);
+
+		TraceLength = 350.f;
+
+		bIsFP = true;
+		bIsTP = false;
+	}
+	else if (bIsFP) // to ThirdPerson
+	{
+		SpringArmComp->TargetArmLength = MaxTargetBoomLength;
+		SpringArmComp->SocketOffset = FVector(0.f, 80.f, 0.f);
+
+		GetMesh()->SetVisibility(true);
+
+		TraceLength = 600.f;
+
+		bIsFP = false;
+		bIsTP = true;
+	}
+}
+
+AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDebugLine)
 {
 	FVector StartLoc = CameraComp->GetComponentLocation();
-	FVector EndLoc = (StartLoc + (CameraComp->GetForwardVector() * TraceLength)); // Start location of linetrace is added to camera's forward vector which is multiplied by Trace length
+	FVector EndLoc = (StartLoc + (CameraComp->GetForwardVector() * inTraceLength)); // Start location of linetrace is added to camera's forward vector which is multiplied by Trace length
 
 	FHitResult HitResult;
 
@@ -145,8 +183,6 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float TraceLength, bool bDrawDebug
 	CQP.AddIgnoredActor(this);
 
 	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, StartLoc, EndLoc, ECC_WorldDynamic, CQP);
-
-	
 
 	if (bHitResult)
 	{

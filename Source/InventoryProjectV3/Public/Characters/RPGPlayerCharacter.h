@@ -54,6 +54,28 @@ protected:
 	 */
 	void LookUpAtRate(float Rate);
 
+	/** Switch camera POV to Third Person if in First Person and vise versa */
+	UFUNCTION(BlueprintCallable, Category = "Camera")
+	void SwitchPOV();
+
+	/** Camera boom lengths */
+	float MaxTargetBoomLength;
+	float MinTargetBoomLength;
+
+	/** POV states */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Linetrace|Trace")
+	bool bIsFP;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Linetrace|Trace")
+	bool bIsTP;
+
+	/** Linetrace length that changes depending on POV */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Linetrace|Trace")
+	float TraceLength;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Dialog|State")
+	bool bInDialog;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGXP_Component* XPComp;
 
@@ -61,7 +83,7 @@ protected:
 	AActor* InteractActor;
 
 	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
-	AActor* Linetrace_Camera(float TraceLength, bool bDrawDebugLine);
+	AActor* Linetrace_Camera(float inTraceLength, bool bDrawDebugLine);
 
 public:	
 	// Called every frame
