@@ -157,6 +157,8 @@ void ARPGPlayerCharacter::SwitchPOV()
 
 		bIsFP = true;
 		bIsTP = false;
+
+		OnPOVChanged();
 	}
 	else if (bIsFP) // to ThirdPerson
 	{
@@ -169,6 +171,8 @@ void ARPGPlayerCharacter::SwitchPOV()
 
 		bIsFP = false;
 		bIsTP = true;
+
+		OnPOVChanged();
 	}
 }
 

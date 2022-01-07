@@ -30,6 +30,10 @@ public:
 
 	void LevelUp();
 
+	/** Allows to calculate rewards for killing mobs and completing quests */
+	UFUNCTION(BlueprintCallable, Category = "XP|Functions")
+	float CalculateXPReward(bool bQuestReward, float Multiplier = 1.f);
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

@@ -58,6 +58,9 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Camera")
 	void SwitchPOV();
 
+	UFUNCTION(BlueprintImplementableEvent, Category = "Camera|Events")
+	void OnPOVChanged();
+
 	/** Camera boom lengths */
 	float MaxTargetBoomLength;
 	float MinTargetBoomLength;

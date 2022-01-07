@@ -106,3 +106,15 @@ void URPGXP_Component::LevelUp()
 		// TODO: Play VFX
 	}
 }
+
+float URPGXP_Component::CalculateXPReward(bool bQuestReward, float Multiplier)
+{
+	if (bQuestReward)
+	{
+		return XP_Current_Max * 0.15 * Multiplier; // Quests award 15% of required XP
+	}
+	else
+	{
+		return XP_Current_Max * 0.033 * Multiplier; // Kills (and maybe something else) award 3.3% of required XP
+	}
+}
