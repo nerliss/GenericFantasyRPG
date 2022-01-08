@@ -26,6 +26,8 @@ void URPGXP_Component::BeginPlay()
 	XP_Current_Max = 100.f;
 
 	Calculate_MaxXP();
+
+	//OnLevelGained.AddDynamic(this, &URPGXP_Component::CalculateXPReward);
 }
 
 // Called every frame
@@ -94,6 +96,9 @@ void URPGXP_Component::LevelUp()
 
 		// Add remaining xp to next level
 		AddXP(XP_Remaining);
+
+		// Call blueprint implementable event (called in player's bp to update XP rewards for quest for now)
+		OnLevelGained.Broadcast();
 
 		// Cosmetics
 		

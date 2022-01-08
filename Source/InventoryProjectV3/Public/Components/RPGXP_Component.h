@@ -6,6 +6,9 @@
 #include "Components/ActorComponent.h"
 #include "RPGXP_Component.generated.h"
 
+// Custom event for Level up
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelGained);
+
 class USoundBase;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
@@ -33,6 +36,10 @@ public:
 	/** Allows to calculate rewards for killing mobs and completing quests */
 	UFUNCTION(BlueprintCallable, Category = "XP|Functions")
 	float CalculateXPReward(bool bQuestReward, float Multiplier = 1.f);
+
+	/** Create an instance of OnLevelGained event */
+	UPROPERTY(BlueprintAssignable, Category = "Events")
+	FOnLevelGained OnLevelGained;
 
 protected:
 	// Called when the game starts
