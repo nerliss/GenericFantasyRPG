@@ -69,6 +69,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
 	float CurrentPercentage_Buffer;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|SP")
+	int SkillPoints;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;

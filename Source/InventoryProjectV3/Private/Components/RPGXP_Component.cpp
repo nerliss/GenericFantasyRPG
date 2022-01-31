@@ -12,6 +12,9 @@ URPGXP_Component::URPGXP_Component()
 
 	// Default level cap
 	Level_Cap = 30;
+
+	// Default SP
+	SkillPoints = 0;
 }
 
 // Called when the game starts
@@ -38,7 +41,6 @@ void URPGXP_Component::TickComponent(float DeltaTime, ELevelTick TickType, FActo
 	// Interpolate from current xp value to new xp value (buffer) thus making an smooth animation
 	XP_Current = UKismetMathLibrary::FCeil(UKismetMathLibrary::FInterpTo(XP_Current, XP_Buffer, DeltaTime, 3.f));
 
-	
 	// Calculate percentage for progress bars 
 	Calculate_Percentage_XP();
 	Calculate_Percentage_Buffer();
@@ -64,6 +66,10 @@ void URPGXP_Component::Calculate_Percentage_Buffer()
 void URPGXP_Component::Calculate_MaxXP()
 {
 	// Temp equation
+	// I kinda like the way it works, because quests and other activities will always grant a fraction
+	// of Current_Max XP, thus making this calculation at some point useless (it will always take you almost the same
+	// time to gain a level no matter of the level - whether you are lvl 1 or lvl 20)
+	// Perhaps in future I will replace this with datatable
 	XP_Current_Max = UKismetMathLibrary::FCeil(XP_Current_Max * 1.7f);
 }
 
@@ -94,14 +100,16 @@ void URPGXP_Component::LevelUp()
 		XP_Current = 0.f;
 		XP_Buffer = 0.f;
 
+		// Add 1 skill point
+		SkillPoints++;
+
 		// Add remaining xp to next level
 		AddXP(XP_Remaining);
 
 		// Call blueprint implementable event (called in player's bp to update XP rewards for quest for now)
 		OnLevelGained.Broadcast();
 
-		// Cosmetics
-		
+		/* Cosmetics */
 		// Play SFX
 		if (LevelUpSound)
 		{
