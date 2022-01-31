@@ -48,19 +48,19 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "XP|Sounds")
 	USoundBase* LevelUpSound;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Level")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Level")
 	int32 Level_Current;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Level")
 	int32 Level_Cap;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Experience")
 	float XP_Current;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Experience")
 	float XP_Current_Max;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Experience")
 	float XP_Buffer;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
