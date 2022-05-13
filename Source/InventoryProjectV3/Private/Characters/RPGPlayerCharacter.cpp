@@ -246,18 +246,18 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 
 		AActor* HitActor = HitResult.GetActor();
 
-// 		if (HitActor->GetClass()->ImplementsInterface(BPI_Interact::StaticClass()))
-// 		{
-// 			return;
-// 		}
+		if (HitActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
+		{
+			// Cast<IRPGInteract_Interface>(HitActor)->InteractPure(); // pure use of an interface function
+			IRPGInteract_Interface::Execute_Interact(HitActor, HitActor); // Blueprint Native Event use 
+		}
+		else
+		{
+			DEBUGMESSAGE("Target doesn't have such interface");
+		}
 
-		// TODO: DoesInplementInterface() using C++ means create the Interface in C++
-		InteractActor = HitActor;
-
-		return InteractActor;
+		return InteractActor = HitActor;
 	}
-
 
 	return InteractActor = NULL;
 }
-

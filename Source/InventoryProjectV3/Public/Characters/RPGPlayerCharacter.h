@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Interfaces/RPGInteract_Interface.h"
 #include "RPGPlayerCharacter.generated.h"
 
 class URPGXP_Component;
@@ -15,7 +16,7 @@ class USoundBase;
 class UAnimMontage;
 
 UCLASS()
-class INVENTORYPROJECTV3_API ARPGPlayerCharacter : public ACharacter
+class INVENTORYPROJECTV3_API ARPGPlayerCharacter : public ACharacter /*, public IRPGInteract_Interface*/ 
 {
 	GENERATED_BODY()
 
@@ -85,6 +86,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category = "Camera|Events")
 	void OnPOVChanged();
 
+	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
+	AActor* Linetrace_Camera(float inTraceLength, bool bDrawDebugLine);
+
 	/** Camera boom lengths */
 	float MaxTargetBoomLength;
 	float MinTargetBoomLength;
@@ -105,9 +109,6 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Linetrace|Camera|Actor")
 	AActor* InteractActor;
-
-	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
-	AActor* Linetrace_Camera(float inTraceLength, bool bDrawDebugLine);
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HP|Animations")
 	UAnimMontage* DeathMontage;
