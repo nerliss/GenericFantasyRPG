@@ -116,7 +116,11 @@ void URPGXP_Component::LevelUp()
 			UGameplayStatics::SpawnSound2D(this, LevelUpSound, 0.7f);
 		}
 
-		// TODO: Play VFX
+		// Play VFX
+		if (LevelUpParticle)
+		{
+			UGameplayStatics::SpawnEmitterAttached(LevelUpParticle, GetOwner()->GetRootComponent());
+		}
 	}
 }
 

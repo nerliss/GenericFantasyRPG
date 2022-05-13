@@ -7,9 +7,12 @@
 #include "RPGPlayerCharacter.generated.h"
 
 class URPGXP_Component;
+class URPGHealth_Component;
 class UCameraComponent;
 class USpringArmComponent;
 class AActor;
+class USoundBase;
+class UAnimMontage;
 
 UCLASS()
 class INVENTORYPROJECTV3_API ARPGPlayerCharacter : public ACharacter
@@ -25,6 +28,12 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* CameraComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	URPGXP_Component* XPComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	URPGHealth_Component* HPComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
@@ -42,6 +51,12 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
+	/** Sprint start */
+	void Sprint_Start();
+
+	/** Sprint end */
+	void Sprint_Stop();
+
 	/**
 	 * Called via input to turn at a given rate.
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
@@ -53,6 +68,15 @@ protected:
 	 * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
 	 */
 	void LookUpAtRate(float Rate);
+
+	UFUNCTION(BlueprintCallable, Category = "HP|Death|Functions")
+	void Death();
+
+	/** Called in blueprints to add some cosmetic stuff that is difficult/impossible to implement in C++ to death event
+	 * (i.e. timelines, widgets that are created in BP etc.)
+	 */
+	UFUNCTION(BlueprintImplementableEvent, Category = "HP|Death|Functions")
+	void OnDied();
 
 	/** Switch camera POV to Third Person if in First Person and vise versa */
 	UFUNCTION(BlueprintCallable, Category = "Camera")
@@ -79,14 +103,17 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Dialog|State")
 	bool bInDialog;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	URPGXP_Component* XPComp;
-
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Linetrace|Camera|Actor")
 	AActor* InteractActor;
 
 	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
 	AActor* Linetrace_Camera(float inTraceLength, bool bDrawDebugLine);
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HP|Animations")
+	UAnimMontage* DeathMontage;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "HP|Sounds")
+	USoundBase* DeathSound;
 
 public:	
 	// Called every frame

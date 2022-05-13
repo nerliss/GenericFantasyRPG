@@ -9,7 +9,9 @@
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
 #include "Components/RPGXP_Component.h"
+#include "Components/RPGHealth_Component.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 
 // Print string on screen macro
@@ -44,6 +46,9 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 
 	// Create XP component
 	XPComp = CreateDefaultSubobject<URPGXP_Component>(TEXT("XPComp"));
+
+	// Create HP component
+	HPComp = CreateDefaultSubobject<URPGHealth_Component>(TEXT("HPComp"));
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -91,6 +96,8 @@ void ARPGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	// Setup action bindings
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ARPGPlayerCharacter::Sprint_Start);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ARPGPlayerCharacter::Sprint_Stop);
 	PlayerInputComponent->BindAction("SwitchPOV", IE_Pressed, this, &ARPGPlayerCharacter::SwitchPOV);
 
 	// Setup axis bindings
@@ -132,6 +139,16 @@ void ARPGPlayerCharacter::MoveRight(float Value)
 	}
 }
 
+void ARPGPlayerCharacter::Sprint_Start()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 4500.f;
+}
+
+void ARPGPlayerCharacter::Sprint_Stop()
+{
+	GetCharacterMovement()->MaxWalkSpeed = 600.f;
+}
+
 void ARPGPlayerCharacter::TurnAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
@@ -142,6 +159,37 @@ void ARPGPlayerCharacter::LookUpAtRate(float Rate)
 {
 	// calculate delta for this frame from the rate information
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
+}
+
+void ARPGPlayerCharacter::Death()
+{
+	if (HPComp && !HPComp->bDied)
+	{
+		HPComp->bDied = true;
+
+		// Disable collision
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		
+		// Disable input
+		DisableInput(UGameplayStatics::GetPlayerController(this, 0));
+
+		// Call blueprint event
+		OnDied();
+
+		/* Cosmetics */
+		// AnimMontage
+		if (DeathMontage)
+		{
+			PlayAnimMontage(DeathMontage);
+		}
+
+		// SFX
+		if (DeathSound)
+		{
+			UGameplayStatics::SpawnSound2D(this, DeathSound);
+		}
+	}
 }
 
 void ARPGPlayerCharacter::SwitchPOV()

@@ -10,6 +10,7 @@
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnLevelGained);
 
 class USoundBase;
+class UParticleSystem;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class INVENTORYPROJECTV3_API URPGXP_Component : public UActorComponent
@@ -47,6 +48,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "XP|Sounds")
 	USoundBase* LevelUpSound;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "XP|Particles")
+	UParticleSystem* LevelUpParticle;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Level")
 	int32 Level_Current;
