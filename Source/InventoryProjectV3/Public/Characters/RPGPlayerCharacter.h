@@ -89,6 +89,8 @@ protected:
 	UFUNCTION(BlueprintCallable, Category = "Linetrace|Camera")
 	AActor* Linetrace_Camera(float inTraceLength, bool bDrawDebugLine);
 
+	void Interact();
+
 	/** Camera boom lengths */
 	float MaxTargetBoomLength;
 	float MinTargetBoomLength;

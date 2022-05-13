@@ -15,7 +15,7 @@
 #include "DrawDebugHelpers.h"
 
 // Print string on screen macro
-#define DEBUGMESSAGE(x, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::Printf(TEXT(x), __VA_ARGS__));}
+#define DEBUGMESSAGE(x, y, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, x, FColor::Red, FString::Printf(TEXT(y), __VA_ARGS__));}
 
 // Sets default values
 ARPGPlayerCharacter::ARPGPlayerCharacter()
@@ -99,6 +99,7 @@ void ARPGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ARPGPlayerCharacter::Sprint_Start);
 	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ARPGPlayerCharacter::Sprint_Stop);
 	PlayerInputComponent->BindAction("SwitchPOV", IE_Pressed, this, &ARPGPlayerCharacter::SwitchPOV);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ARPGPlayerCharacter::Interact);
 
 	// Setup axis bindings
 	PlayerInputComponent->BindAxis("MoveForward", this, &ARPGPlayerCharacter::MoveForward);
@@ -108,7 +109,6 @@ void ARPGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("TurnRate", this, &ARPGPlayerCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &ARPGPlayerCharacter::LookUpAtRate);
-
 }
 
 void ARPGPlayerCharacter::MoveForward(float Value)
@@ -249,15 +249,25 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 		if (HitActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
 		{
 			// Cast<IRPGInteract_Interface>(HitActor)->InteractPure(); // pure use of an interface function
-			IRPGInteract_Interface::Execute_Interact(HitActor, HitActor); // Blueprint Native Event use 
+			// IRPGInteract_Interface::Execute_GetName(HitActor); // Blueprint Native Event use 
 		}
 		else
 		{
-			DEBUGMESSAGE("Target doesn't have such interface");
+			// DEBUGMESSAGE("Target doesn't have such interface");
 		}
 
 		return InteractActor = HitActor;
 	}
 
 	return InteractActor = NULL;
+}
+
+void ARPGPlayerCharacter::Interact()
+{
+	// Interact with object if it exists and has our Interact_Interface
+	if (InteractActor && InteractActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
+	{
+		IRPGInteract_Interface::Execute_Interact(InteractActor, this);
+		DEBUGMESSAGE(5.f, "Successfully interacted");
+	}
 }
