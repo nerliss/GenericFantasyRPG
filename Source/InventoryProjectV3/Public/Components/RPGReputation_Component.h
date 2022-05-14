@@ -25,7 +25,10 @@ struct FReputations
 	TEnumAsByte<EFactions> Faction_name;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reputations Struct")
-	float Amount;
+	float Reputation_Amount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Reputations Struct")
+	float Reputation_Cap;
 
 };
 

@@ -16,11 +16,11 @@ URPGReputation_Component::URPGReputation_Component()
 	Reputations.SetNum(5);
 
 	// Set default values for each element
-	Reputations[0] = { Faction_Orcs, 1.f };
-	Reputations[1] = { Faction_Humans, 2.f };
-	Reputations[2] = { Faction_Dwarfs, 3.f };
-	Reputations[3] = { Faction_Elves, 4.f };
-	Reputations[4] = { Faction_Demons, 5.f };
+	Reputations[0] = { Faction_Orcs, 0.f};
+	Reputations[1] = { Faction_Humans, 0.f};
+	Reputations[2] = { Faction_Dwarfs, 0.f};
+	Reputations[3] = { Faction_Elves, 0.f};
+	Reputations[4] = { Faction_Demons, 0.f};
 }
 
 // Called when the game starts
@@ -47,7 +47,7 @@ void URPGReputation_Component::GetReputation(const TEnumAsByte<EFactions> In_Nam
 			Out_Index = i;
 
 			// Return its amount of reputation
-			Out_Amount = Reputations[i].Amount;
+			Out_Amount = Reputations[i].Reputation_Amount;
 
 			// Return its name
 			Out_Name = Reputations[i].Faction_name;
