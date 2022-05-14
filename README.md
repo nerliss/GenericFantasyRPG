@@ -8,6 +8,7 @@ Just a passion project of mine. Heavily inspired by World of Warcraft, The Elder
 - Heavily integrated with dialog system Quest system - currently allows you to have one active quest that is displayed on screen, but at the same time all of the quests can be progressed without any problems. Supports quest chains, has different quest categories that are displayed in quest log (Story quests and Side quests). It is still possible to delete a quest from your quest log (just like in MMORPGs), but that is an object to change.
 - Texture-based minimap - texture-based means it uses a picture as a map rather than rendering it in realtime via RenderTarget. Shows active quest objectives, player position, places of interest, enemies and North direction.
 - XP, level and talents system - allows one to get experience for quests, mobs, some actions and level up the player's character. Upon leveling up gives 1 skill point to spent in talents (skill) window. Currently skills have 3 sections, but that is something to reconsider.
+- Reputations system. Does nothing in particular right now.
 - World Partition, One File Per Actor, Data Layers support - World Partition works with One File Per Actor feature and allows to stream in and out different parts of the map and scene objects. Data Layers give a very useful feature to stream and show certain scene objects when certain conditions are met.
 
 # TODO
@@ -15,5 +16,4 @@ Just a passion project of mine. Heavily inspired by World of Warcraft, The Elder
 - Equipment and stats system.
 - Traders.
 - Craft(?).
-- Reputations(?)
-- Mounts (?)
+- Mounts(?).
