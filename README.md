@@ -15,4 +15,5 @@ Just a passion project of mine. Heavily inspired by World of Warcraft, The Elder
 - Equipment and stats system.
 - Traders.
 - Craft(?).
- 
+- Reputations(?)
+- Mounts (?)
