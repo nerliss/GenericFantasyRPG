@@ -10,6 +10,7 @@
 #include "Components/InputComponent.h"
 #include "Components/RPGXP_Component.h"
 #include "Components/RPGHealth_Component.h"
+#include "Components/RPGReputation_Component.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
@@ -50,6 +51,9 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 	// Create HP component
 	HPComp = CreateDefaultSubobject<URPGHealth_Component>(TEXT("HPComp"));
 
+	// Create Reputation component
+	ReputationComp = CreateDefaultSubobject<URPGReputation_Component>(TEXT("ReputationComp"));
+
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -78,14 +82,12 @@ void ARPGPlayerCharacter::BeginPlay()
 	
 	// SpringArm offset 
 	SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 65.f));
-
 }
 
 // Called every frame
 void ARPGPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
 
 // Called to bind functionality to input

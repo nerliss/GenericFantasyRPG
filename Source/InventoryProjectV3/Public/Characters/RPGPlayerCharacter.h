@@ -9,6 +9,7 @@
 
 class URPGXP_Component;
 class URPGHealth_Component;
+class URPGReputation_Component;
 class UCameraComponent;
 class USpringArmComponent;
 class AActor;
@@ -35,6 +36,9 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGHealth_Component* HPComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	URPGReputation_Component* ReputationComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
