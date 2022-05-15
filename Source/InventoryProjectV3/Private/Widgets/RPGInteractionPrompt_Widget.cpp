@@ -7,6 +7,11 @@
 #include "Components/VerticalBox.h"
 #include "Components/VerticalBoxSlot.h"
 
+void URPGInteractionPrompt_Widget::NativeConstruct()
+{
+	Super::NativeConstruct();
+}
+
 bool URPGInteractionPrompt_Widget::Initialize()
 {
 	bool Success = Super::Initialize();

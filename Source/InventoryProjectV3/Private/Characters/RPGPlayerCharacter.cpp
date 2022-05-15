@@ -14,6 +14,8 @@
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
+#include "Widgets/RPGInteractionPrompt_Widget.h"
+#include "Blueprint/UserWidget.h"
 
 // Print string on screen macro
 #define DEBUGMESSAGE(x, y, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, x, FColor::Red, FString::Printf(TEXT(y), __VA_ARGS__));}
@@ -82,12 +84,16 @@ void ARPGPlayerCharacter::BeginPlay()
 	
 	// SpringArm offset 
 	SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 65.f));
+
+	DEBUGMESSAGE(5.f, "TSubclassOf<UUserWidget> %d", WidgetClass);
 }
 
 // Called every frame
 void ARPGPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	Linetrace_Camera(600.f, true);
 }
 
 // Called to bind functionality to input
@@ -248,15 +254,51 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 
 		AActor* HitActor = HitResult.GetActor();
 
+		// Show interaction prompt if actor is eligible
 		if (HitActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
 		{
-			// TODO: Show on screen message here, in C++. Requires a lot of rework
+			if (WidgetClass && !InteractionPrompt_Widget)
+			{
+				// Create interaction prompt
+				InteractionPrompt_Widget = Cast<URPGInteractionPrompt_Widget>(CreateWidget(GetWorld(), WidgetClass));
+				
+				if (InteractionPrompt_Widget)
+				{
+					// Get actor's name
+					InteractionPrompt_Widget->Text_Target_Name = IRPGInteract_Interface::Execute_GetName(HitActor);
+
+					// Set viewport parameters
+					InteractionPrompt_Widget->SetAnchorsInViewport(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
+					InteractionPrompt_Widget->SetAlignmentInViewport(FVector2D(0.5f, -1.f));
+					InteractionPrompt_Widget->SetPositionInViewport(FVector2D(0.f, 0.f));
+					// TODO: HUD widget on C++. Add this widget to HUD widget to look as intended
+
+					// Add widget to viewport
+					InteractionPrompt_Widget->AddToViewport();
+					DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is CREATED");
+				}
+			}
+ 		}
+		// If there is a HitActor and a prompt widget exists - delete it
+		else if (InteractionPrompt_Widget)
+		{
+			InteractionPrompt_Widget->RemoveFromParent();
+			InteractionPrompt_Widget = nullptr;
+			DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
 		}
 
 		return InteractActor = HitActor;
 	}
 
-	return InteractActor = NULL;
+	// If there is no HitActor at all and prompt widget still exists = delete it
+	if (InteractionPrompt_Widget)
+	{
+		InteractionPrompt_Widget->RemoveFromParent();
+		InteractionPrompt_Widget = nullptr;
+		DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
+	}
+
+	return InteractActor = nullptr;
 }
 
 void ARPGPlayerCharacter::Interact()

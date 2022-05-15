@@ -18,6 +18,8 @@ class INVENTORYPROJECTV3_API URPGInteractionPrompt_Widget : public UUserWidget
 
 public:
 
+	virtual void NativeConstruct() override;
+
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	USizeBox* MainSizeBox = nullptr;
 

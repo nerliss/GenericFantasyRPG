@@ -40,6 +40,15 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGReputation_Component* ReputationComp;
 
+	/** This variable MUST be set in blueprints, otherwise it will be a nullptr.
+	* In most cases one should choose a blueprint widget, derived from c++, not the original c++ widget
+	*/
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class Types")
+	TSubclassOf<UUserWidget> WidgetClass;
+
+	UPROPERTY()
+	class URPGInteractionPrompt_Widget* InteractionPrompt_Widget;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
 
