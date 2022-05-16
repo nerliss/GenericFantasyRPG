@@ -244,7 +244,7 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 
 	bool bHitResult = GetWorld()->LineTraceSingleByChannel(HitResult, StartLoc, EndLoc, ECC_WorldDynamic, CQP);
 
-	if (bHitResult)
+	if (bHitResult && !bInDialog)
 	{
 		// Draw debug line if set to
 		if (bDrawDebugLine)
