@@ -16,9 +16,7 @@
 #include "DrawDebugHelpers.h"
 #include "Widgets/RPGInteractionPrompt_Widget.h"
 #include "Blueprint/UserWidget.h"
-
-// Print string on screen macro
-#define DEBUGMESSAGE(x, y, ...) if(GEngine){GEngine->AddOnScreenDebugMessage(-1, x, FColor::Red, FString::Printf(TEXT(y), __VA_ARGS__));}
+#include "Utility/Utility.h"
 
 // Sets default values
 ARPGPlayerCharacter::ARPGPlayerCharacter()

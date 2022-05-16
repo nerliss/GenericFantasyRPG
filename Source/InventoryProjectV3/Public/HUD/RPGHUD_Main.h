@@ -22,8 +22,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Crosshair")
 	UTexture* CrosshairTexture;
 
-	//ReceiveDrawHUD(int32 SizeX, int32 SizeY);
-
 	UFUNCTION(BlueprintCallable, Category = "Crosshair")
 	void DrawCrosshair(float ScreenWidth, float ScreenHeight);
 	

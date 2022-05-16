@@ -15,6 +15,8 @@ class USpringArmComponent;
 class AActor;
 class USoundBase;
 class UAnimMontage;
+class URPGInteractionPrompt_Widget;
+class URPGHUD_Widget;
 
 UCLASS()
 class INVENTORYPROJECTV3_API ARPGPlayerCharacter : public ACharacter /*, public IRPGInteract_Interface*/ 
@@ -47,7 +49,11 @@ public:
 	TSubclassOf<UUserWidget> WidgetClass;
 
 	UPROPERTY()
-	class URPGInteractionPrompt_Widget* InteractionPrompt_Widget;
+	URPGInteractionPrompt_Widget* InteractionPrompt_Widget;
+
+	// Reference to HUD Widget - is set in RPGPlayer_Controller
+	UPROPERTY()
+	URPGHUD_Widget* MainHUD_WidgetRef;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	float BaseTurnRate;
