@@ -11,24 +11,28 @@
 ARPGPlayer_Controller::ARPGPlayer_Controller()
 {
 	MainHUD_Widget = nullptr;
-	MainHud_WidgetClass = nullptr;
+	MainHUD_WidgetClass = nullptr;
 }
 
 void ARPGPlayer_Controller::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (MainHud_WidgetClass)
+	// Check if MainHUD_WidgetClass is set (in blueprints)
+	if (MainHUD_WidgetClass)
 	{
-		MainHUD_Widget = Cast<URPGHUD_Widget>(CreateWidget(GetWorld(), MainHud_WidgetClass));
+		// Create widget derived from URPGHUD_Widget
+		MainHUD_Widget = Cast<URPGHUD_Widget>(CreateWidget(GetWorld(), MainHUD_WidgetClass));
 
 		if (MainHUD_Widget)
 		{
-			MainHUD_Widget->AddToViewport();
-
+			// Set player reference
 			ARPGPlayerCharacter* PlayerRef = Cast<ARPGPlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
 
+			// Set HUD widget reference in Player character
 			PlayerRef->MainHUD_WidgetRef = MainHUD_Widget;
+
+			MainHUD_Widget->AddToViewport();
 			DEBUGMESSAGE(3.f, "MainHUD references set");
 		}
 	}

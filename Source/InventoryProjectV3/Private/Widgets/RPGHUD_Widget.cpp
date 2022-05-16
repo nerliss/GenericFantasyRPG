@@ -17,6 +17,7 @@ bool URPGHUD_Widget::Initialize()
 		return false;
 	}
 
+	// TODO: Create references to multiple user-created widgets, e.g. InteractionPrompt_Widget etc.
 
 	return true;
 }

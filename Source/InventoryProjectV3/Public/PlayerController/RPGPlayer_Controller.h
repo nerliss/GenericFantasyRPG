@@ -17,13 +17,12 @@ class INVENTORYPROJECTV3_API ARPGPlayer_Controller : public APlayerController
 
 public:
 
+	virtual void BeginPlay() override;
+
+	// Blueprint reference to a Main HUD Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget Class")
-	TSubclassOf<UUserWidget> MainHud_WidgetClass;
+	TSubclassOf<UUserWidget> MainHUD_WidgetClass;
 
 	UPROPERTY()
 	URPGHUD_Widget* MainHUD_Widget;
-
-	virtual void BeginPlay() override;
-
-
 };
