@@ -15,6 +15,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
 #include "Widgets/RPGInteractionPrompt_Widget.h"
+#include "Widgets/RPGHUD_Widget.h"
 #include "Blueprint/UserWidget.h"
 #include "Utility/Utility.h"
 
@@ -82,8 +83,6 @@ void ARPGPlayerCharacter::BeginPlay()
 	
 	// SpringArm offset 
 	SpringArmComp->SetRelativeLocation(FVector(0.f, 0.f, 65.f));
-
-	DEBUGMESSAGE(5.f, "TSubclassOf<UUserWidget> %d", WidgetClass);
 }
 
 // Called every frame
@@ -91,7 +90,7 @@ void ARPGPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Linetrace_Camera(600.f, true);
+	Linetrace_Camera(600.f, false);
 }
 
 // Called to bind functionality to input
@@ -255,46 +254,37 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 		// Show interaction prompt if actor is eligible
 		if (HitActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
 		{
-			if (WidgetClass && !InteractionPrompt_Widget)
+			if (MainHUD_WidgetRef)
 			{
-				// Create interaction prompt
-				InteractionPrompt_Widget = Cast<URPGInteractionPrompt_Widget>(CreateWidget(GetWorld(), WidgetClass));
-				
-				if (InteractionPrompt_Widget)
-				{
-					// Get actor's name
-					InteractionPrompt_Widget->Text_Target_Name = IRPGInteract_Interface::Execute_GetName(HitActor);
-
-					// Set viewport parameters
-					InteractionPrompt_Widget->SetAnchorsInViewport(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
-					InteractionPrompt_Widget->SetAlignmentInViewport(FVector2D(0.5f, -1.f));
-					InteractionPrompt_Widget->SetPositionInViewport(FVector2D(0.f, 0.f));
-					// TODO: HUD widget on C++. Add this widget to HUD widget to look as intended
-
-					// Add widget to viewport
-					InteractionPrompt_Widget->AddToViewport();
-					DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is CREATED");
-				}
+				MainHUD_WidgetRef->DisplayInteractionMessage(true, IRPGInteract_Interface::Execute_GetName(HitActor));
 			}
+
  		}
-		// If there is a HitActor and a prompt widget exists - delete it
-		else if (InteractionPrompt_Widget)
+		// Delete interaction prompt if HitActior doesn't implement the interface (providing it exists)
+		else
 		{
-			InteractionPrompt_Widget->RemoveFromParent();
-			InteractionPrompt_Widget = nullptr;
-			DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
+			if (MainHUD_WidgetRef)
+			{
+				MainHUD_WidgetRef->DisplayInteractionMessage(false, FText::FromString(""));
+			}
 		}
 
 		return InteractActor = HitActor;
 	}
 
-	// If there is no HitActor at all and prompt widget still exists = delete it
-	if (InteractionPrompt_Widget)
+	// Delete interaction prompt if no HitActor present
+	if (MainHUD_WidgetRef)
 	{
-		InteractionPrompt_Widget->RemoveFromParent();
-		InteractionPrompt_Widget = nullptr;
-		DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
+		MainHUD_WidgetRef->DisplayInteractionMessage(false, FText::FromString(""));
 	}
+
+	// If there is no HitActor at all and prompt widget still exists = delete it
+// 	if (InteractionPrompt_Widget)
+// 	{
+// 		InteractionPrompt_Widget->RemoveFromParent();
+// 		InteractionPrompt_Widget = nullptr;
+// 		DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
+// 	}
 
 	return InteractActor = nullptr;
 }

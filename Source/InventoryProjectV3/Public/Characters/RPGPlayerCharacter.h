@@ -15,7 +15,6 @@ class USpringArmComponent;
 class AActor;
 class USoundBase;
 class UAnimMontage;
-class URPGInteractionPrompt_Widget;
 class URPGHUD_Widget;
 
 UCLASS()
@@ -41,15 +40,6 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGReputation_Component* ReputationComp;
-
-	/** This variable MUST be set in blueprints, otherwise it will be a nullptr.
-	* In most cases one should choose a blueprint widget, derived from c++, not the original c++ widget
-	*/
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class Types")
-	TSubclassOf<UUserWidget> WidgetClass;
-
-	UPROPERTY()
-	URPGInteractionPrompt_Widget* InteractionPrompt_Widget;
 
 	// Reference to HUD Widget - is set in RPGPlayer_Controller
 	UPROPERTY()
