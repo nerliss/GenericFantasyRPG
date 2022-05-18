@@ -7,6 +7,21 @@
 #include "Widgets/RPGInteractionPrompt_Widget.h"
 #include "Utility/Utility.h"
 
+bool URPGHUD_Widget::Initialize()
+{
+	bool Success = Super::Initialize();
+
+	if (!Success)
+	{
+		return false;
+	}
+
+
+	// TODO: Create references to multiple user-created widgets that still need to be implemented via C++
+
+	return true;
+}
+
 void URPGHUD_Widget::NativeConstruct()
 {
 	Super::NativeConstruct();
@@ -54,18 +69,4 @@ void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetNa
 			}
 		}
 	}
-}
-
-bool URPGHUD_Widget::Initialize()
-{
-	bool Success = Super::Initialize();
-
-	if (!Success)
-	{
-		return false;
-	}
-
-	// TODO: Create references to multiple user-created widgets that still need to be implemented via C++
-
-	return true;
 }

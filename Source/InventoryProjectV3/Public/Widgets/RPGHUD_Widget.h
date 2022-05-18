@@ -8,12 +8,17 @@
 
 class UCanvasPanel;
 class URPGInteractionPrompt_Widget;
+class URPGXPBar_Widget;
 
 UCLASS()
 class INVENTORYPROJECTV3_API URPGHUD_Widget : public UUserWidget
 {
 	GENERATED_BODY()
 	
+private:
+
+	bool Initialize() override;
+
 public:
 
 	virtual void NativeConstruct() override;
@@ -21,6 +26,10 @@ public:
 	// Canvas is used to store different user-created widgets
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	UCanvasPanel* HUDCanvas;
+
+	// TODO: Doesn't work the way normal widgets would. Figure it out
+// 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+// 	URPGXPBar_Widget* XPBar_Widget;
 
 	// In BP set to BP child of RPGInteractionPrompt_Widget
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class Types")
@@ -38,8 +47,4 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Widget")
 	void DisplayInteractionMessage(bool bShowMessage, FText TargetName);
 	
-private:
-
-	bool Initialize() override;
-
 };

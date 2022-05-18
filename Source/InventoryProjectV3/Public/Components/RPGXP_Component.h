@@ -38,6 +38,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "XP|Functions")
 	float CalculateXPReward(bool bQuestReward, float Multiplier = 1.f);
 
+	float GetXP_Current();
+
+	float GetXP_Current_Max();
+
+	float GetCurrentPercentage_XP();
+
+	float GetCurrentPercentage_Buffer();
+
+	int32 GetSkillPoints();
+
+	int32 GetLevelCurrent();
+
 	/** Create an instance of OnLevelGained event */
 	UPROPERTY(BlueprintAssignable, Category = "Events")
 	FOnLevelGained OnLevelGained;
@@ -58,6 +70,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Level")
 	int32 Level_Cap;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|SP")
+	int32 SkillPoints;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|Experience")
 	float XP_Current;
 
@@ -72,9 +87,6 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "XP|Experience")
 	float CurrentPercentage_Buffer;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "XP|SP")
-	int SkillPoints;
 
 public:	
 	// Called every frame
