@@ -15,7 +15,6 @@ URPGHealth_Component::URPGHealth_Component()
 	
 }
 
-
 // Called when the game starts
 void URPGHealth_Component::BeginPlay()
 {
@@ -25,6 +24,15 @@ void URPGHealth_Component::BeginPlay()
 	HP_Current = HP_Max;
 }
 
+float URPGHealth_Component::GetCurrentHP()
+{
+	return HP_Current;
+}
+
+float URPGHealth_Component::GetMaxHP()
+{
+	return HP_Max;
+}
 
 // Called every frame
 void URPGHealth_Component::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)

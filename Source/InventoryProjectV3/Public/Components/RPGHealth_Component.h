@@ -18,8 +18,13 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HP")
 	bool bDied;
+
+	float GetCurrentHP();
+
+	float GetMaxHP();
 	
 protected:
+
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
@@ -29,8 +34,8 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "HP")
 	float HP_Current;
 
-
 public:	
+
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 

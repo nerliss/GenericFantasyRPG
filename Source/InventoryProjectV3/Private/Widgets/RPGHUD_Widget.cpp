@@ -16,7 +16,6 @@ bool URPGHUD_Widget::Initialize()
 		return false;
 	}
 
-
 	// TODO: Create references to multiple user-created widgets that still need to be implemented via C++
 
 	return true;
@@ -25,6 +24,8 @@ bool URPGHUD_Widget::Initialize()
 void URPGHUD_Widget::NativeConstruct()
 {
 	Super::NativeConstruct();
+
+	
 }
 
 void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetName)
@@ -46,13 +47,14 @@ void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetNa
 				{
 					HUDCanvas->AddChildToCanvas(InteractionPrompt_Widget);
 
-					UCanvasPanelSlot* CanvasPanelSlot = CastChecked<UCanvasPanelSlot>(HUDCanvas->GetSlots()[0]);
+					// Should dynamically find the last slot
+					UCanvasPanelSlot* InteractionPromptSlot = CastChecked<UCanvasPanelSlot>(HUDCanvas->GetSlots()[2]);
 
 					// Approximately lower center of the screen
-					CanvasPanelSlot->SetAutoSize(true);
-					CanvasPanelSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
-					CanvasPanelSlot->SetAlignment(FVector2D(0.5f, -1.f));
-					CanvasPanelSlot->SetPosition(FVector2D(0.f, 0.f));
+					InteractionPromptSlot->SetAutoSize(true);
+					InteractionPromptSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
+					InteractionPromptSlot->SetAlignment(FVector2D(0.5f, -1.f));
+					InteractionPromptSlot->SetPosition(FVector2D(0.f, 0.f));
 
 					DEBUGMESSAGE(5.f, "Interaction prompt set and configured in the Canvas");
 				}
