@@ -11,6 +11,7 @@
 #include "Components/RPGXP_Component.h"
 #include "Components/RPGHealth_Component.h"
 #include "Components/RPGReputation_Component.h"
+#include "Components/PointLightComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "DrawDebugHelpers.h"
@@ -45,6 +46,16 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 	CameraComp = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComp"));
 	CameraComp->SetupAttachment(SpringArmComp);
 	CameraComp->bUsePawnControlRotation = false;
+
+	// Flashlight component
+	FlashlightComp = CreateDefaultSubobject<UPointLightComponent>(TEXT("FlashlightComp"));
+	FlashlightComp->SetSourceRadius(170.f);
+
+	// Give it more yellow-ish color
+	FlashlightComp->SetUseTemperature(true);
+	FlashlightComp->SetTemperature(4680.f);
+	FlashlightComp->SetCastShadows(false);
+	FlashlightComp->SetLightColor(FLinearColor(1.f, 0.78f, 0.13f, 1));
 
 	// Create XP component
 	XPComp = CreateDefaultSubobject<URPGXP_Component>(TEXT("XPComp"));
@@ -90,7 +101,7 @@ void ARPGPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Linetrace_Camera(600.f, false);
+	Linetrace_Camera(1000.f, false);
 }
 
 // Called to bind functionality to input
@@ -99,10 +110,10 @@ void ARPGPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	// Setup action bindings
-	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
-	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ARPGPlayerCharacter::Sprint_Start);
-	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ARPGPlayerCharacter::Sprint_Stop);
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ARPGPlayerCharacter::StartJumping);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ARPGPlayerCharacter::StopJumping);
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &ARPGPlayerCharacter::StartSprinting);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &ARPGPlayerCharacter::StopSprinting);
 	PlayerInputComponent->BindAction("SwitchPOV", IE_Pressed, this, &ARPGPlayerCharacter::SwitchPOV);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &ARPGPlayerCharacter::Interact);
 
@@ -144,12 +155,24 @@ void ARPGPlayerCharacter::MoveRight(float Value)
 	}
 }
 
-void ARPGPlayerCharacter::Sprint_Start()
+void ARPGPlayerCharacter::StartJumping()
+{
+	ACharacter::Jump();
+
+	// TODO: Make character stop rotating while in air
+}
+
+void ARPGPlayerCharacter::StopJumping()
+{
+	ACharacter::StopJumping();
+}
+
+void ARPGPlayerCharacter::StartSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 4500.f;
 }
 
-void ARPGPlayerCharacter::Sprint_Stop()
+void ARPGPlayerCharacter::StopSprinting()
 {
 	GetCharacterMovement()->MaxWalkSpeed = 600.f;
 }
@@ -258,7 +281,6 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 			{
 				MainHUD_WidgetRef->DisplayInteractionMessage(true, IRPGInteract_Interface::Execute_GetName(HitActor));
 			}
-
  		}
 		// Delete interaction prompt if HitActior doesn't implement the interface (providing it exists)
 		else
@@ -278,14 +300,6 @@ AActor* ARPGPlayerCharacter::Linetrace_Camera(float inTraceLength, bool bDrawDeb
 		MainHUD_WidgetRef->DisplayInteractionMessage(false, FText::FromString(""));
 	}
 
-	// If there is no HitActor at all and prompt widget still exists = delete it
-// 	if (InteractionPrompt_Widget)
-// 	{
-// 		InteractionPrompt_Widget->RemoveFromParent();
-// 		InteractionPrompt_Widget = nullptr;
-// 		DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is REMOVED");
-// 	}
-
 	return InteractActor = nullptr;
 }
 
@@ -295,6 +309,5 @@ void ARPGPlayerCharacter::Interact()
 	if (InteractActor && InteractActor->GetClass()->ImplementsInterface(URPGInteract_Interface::StaticClass()))
 	{
 		IRPGInteract_Interface::Execute_Interact(InteractActor, this);
-		DEBUGMESSAGE(5.f, "Successfully interacted");
 	}
 }

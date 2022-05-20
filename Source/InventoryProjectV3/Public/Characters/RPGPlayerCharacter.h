@@ -12,6 +12,7 @@ class URPGHealth_Component;
 class URPGReputation_Component;
 class UCameraComponent;
 class USpringArmComponent;
+class UPointLightComponent;
 class AActor;
 class USoundBase;
 class UAnimMontage;
@@ -41,6 +42,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGReputation_Component* ReputationComp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UPointLightComponent* FlashlightComp;
+
 	// Reference to HUD Widget - is set in RPGPlayer_Controller
 	UPROPERTY()
 	URPGHUD_Widget* MainHUD_WidgetRef;
@@ -61,11 +65,15 @@ protected:
 	/** Called for side to side input */
 	void MoveRight(float Value);
 
+	void StartJumping();
+
+	void StopJumping();
+
 	/** Sprint start */
-	void Sprint_Start();
+	void StartSprinting();
 
 	/** Sprint end */
-	void Sprint_Stop();
+	void StopSprinting();
 
 	/**
 	 * Called via input to turn at a given rate.

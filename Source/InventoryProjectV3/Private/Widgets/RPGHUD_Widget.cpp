@@ -55,8 +55,6 @@ void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetNa
 					InteractionPromptSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
 					InteractionPromptSlot->SetAlignment(FVector2D(0.5f, -1.f));
 					InteractionPromptSlot->SetPosition(FVector2D(0.f, 0.f));
-
-					DEBUGMESSAGE(5.f, "Interaction prompt set and configured in the Canvas");
 				}
 			}
 		}
@@ -67,7 +65,6 @@ void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetNa
 			{
 				InteractionPrompt_Widget->RemoveFromParent();
 				InteractionPrompt_Widget = nullptr;
-				DEBUGMESSAGE(5.f, "InteractionPrompt_Widget is DELETED in MainWidget");
 			}
 		}
 	}
