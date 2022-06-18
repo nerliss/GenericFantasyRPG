@@ -10,6 +10,7 @@
 class URPGXP_Component;
 class URPGHealth_Component;
 class URPGReputation_Component;
+class URPGInventory_Component;
 class UCameraComponent;
 class USpringArmComponent;
 class UPointLightComponent;
@@ -33,19 +34,27 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* CameraComp;
 
+	/** Experience component stores everything about Experience, Skill Points, Skills and Talents (in future) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGXP_Component* XPComp;
 
+	/** Health component responds for actors hit points, damage behavior etc. 
+	* TODO: Turn this component into Stat component that will be storing different player stats such as HP, MP, Strength, Agility etc.  */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGHealth_Component* HPComp;
 
+	/** Reputation component stores all the data about factions and their possible rewards */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGReputation_Component* ReputationComp;
 
+	/** Inventory component stores data about items */
+	URPGInventory_Component* InventoryComp;
+
+	/** Flashlight (more like a test feature) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UPointLightComponent* FlashlightComp;
 
-	// Reference to HUD Widget - is set in RPGPlayer_Controller
+	/** Reference to HUD Widget - is set in RPGPlayer_Controller */
 	UPROPERTY()
 	URPGHUD_Widget* MainHUD_WidgetRef;
 

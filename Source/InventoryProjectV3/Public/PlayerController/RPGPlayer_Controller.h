@@ -20,9 +20,9 @@ public:
 	virtual void BeginPlay() override;
 
 	// Blueprint reference to a Main HUD Widget
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Widget Class")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "HUD Widget|Class")
 	TSubclassOf<UUserWidget> MainHUD_WidgetClass;
 
-	UPROPERTY()
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "HUD Widget|Reference")
 	URPGHUD_Widget* MainHUD_Widget;
 };

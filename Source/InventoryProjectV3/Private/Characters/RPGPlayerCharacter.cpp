@@ -11,6 +11,7 @@
 #include "Components/RPGXP_Component.h"
 #include "Components/RPGHealth_Component.h"
 #include "Components/RPGReputation_Component.h"
+#include "Components/RPGInventory_Component.h"
 #include "Components/PointLightComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Kismet/GameplayStatics.h"
@@ -66,6 +67,9 @@ ARPGPlayerCharacter::ARPGPlayerCharacter()
 	// Create Reputation component
 	ReputationComp = CreateDefaultSubobject<URPGReputation_Component>(TEXT("ReputationComp"));
 
+	// Create inventory component
+	InventoryComp = CreateDefaultSubobject<URPGInventory_Component>(TEXT("InventoryComp"));
+
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -101,7 +105,7 @@ void ARPGPlayerCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	Linetrace_Camera(1000.f, false);
+	Linetrace_Camera(TraceLength, false);
 }
 
 // Called to bind functionality to input
@@ -243,7 +247,7 @@ void ARPGPlayerCharacter::SwitchPOV()
 
 		GetMesh()->SetVisibility(true);
 
-		TraceLength = 600.f;
+		TraceLength = 700.f;
 
 		bIsFP = false;
 		bIsTP = true;
