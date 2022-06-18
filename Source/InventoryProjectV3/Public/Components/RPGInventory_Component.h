@@ -33,13 +33,16 @@ public:
 	TArray<FInventorySlot> Inventory;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory")
-	URPGInventory_Window_Widget* InventoryWindow_Ref;
+	URPGInventory_Window_Widget* Inventory_Window_Widget;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory")
 	FAnchors Anchors;
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Inventory")
 	FVector2D Alignment;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "WidgetClassTypes")
+	TSubclassOf<URPGInventory_Window_Widget> Inventory_Window_WidgetClass;
 
 protected:
 	// Called when the game starts

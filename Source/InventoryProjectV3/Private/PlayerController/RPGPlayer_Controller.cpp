@@ -33,7 +33,7 @@ void ARPGPlayer_Controller::BeginPlay()
 			PlayerRef->MainHUD_WidgetRef = MainHUD_Widget;
 
 			MainHUD_Widget->AddToViewport();
-			DEBUGMESSAGE(3.f, "MainHUD references set");
+			DEBUGMESSAGE(3.f, FColor::Green, "MainHUD references set");
 		}
 	}
 

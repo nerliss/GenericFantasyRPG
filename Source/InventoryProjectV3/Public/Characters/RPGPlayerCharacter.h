@@ -48,6 +48,7 @@ public:
 	URPGReputation_Component* ReputationComp;
 
 	/** Inventory component stores data about items */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	URPGInventory_Component* InventoryComp;
 
 	/** Flashlight (more like a test feature) */

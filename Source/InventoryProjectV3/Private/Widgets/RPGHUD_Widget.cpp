@@ -47,8 +47,11 @@ void URPGHUD_Widget::DisplayInteractionMessage(bool bShowMessage, FText TargetNa
 				{
 					HUDCanvas->AddChildToCanvas(InteractionPrompt_Widget);
 
+					// This will probably get us the most recently-created slot (last slot)
+					int32 LastSlot = HUDCanvas->GetChildrenCount() - 1;
+
 					// Should dynamically find the last slot
-					UCanvasPanelSlot* InteractionPromptSlot = CastChecked<UCanvasPanelSlot>(HUDCanvas->GetSlots()[2]);
+					UCanvasPanelSlot* InteractionPromptSlot = CastChecked<UCanvasPanelSlot>(HUDCanvas->GetSlots()[LastSlot]);
 
 					// Approximately lower center of the screen
 					InteractionPromptSlot->SetAutoSize(true);
