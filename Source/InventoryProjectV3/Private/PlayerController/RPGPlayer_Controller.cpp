@@ -30,10 +30,14 @@ void ARPGPlayer_Controller::BeginPlay()
 			ARPGPlayerCharacter* PlayerRef = Cast<ARPGPlayerCharacter>(UGameplayStatics::GetPlayerPawn(this, 0));
 
 			// Set HUD widget reference in Player character
-			PlayerRef->MainHUD_WidgetRef = MainHUD_Widget;
+			if (PlayerRef)
+			{
+				PlayerRef->MainHUD_WidgetRef = MainHUD_Widget;
 
-			MainHUD_Widget->AddToViewport();
-			DEBUGMESSAGE(3.f, FColor::Green, "MainHUD references set");
+				MainHUD_Widget->AddToViewport();
+				DEBUGMESSAGE(3.f, FColor::Green, "MainHUD references set");
+			}
+
 		}
 	}
 
